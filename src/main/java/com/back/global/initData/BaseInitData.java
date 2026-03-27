@@ -31,32 +31,31 @@ public class BaseInitData {
     }
 
     @Transactional
-    public void work1() {
+    public void work2() {
         if(postService.count() > 0) {
             return;
         }
-        Member member1 = memberService.findByUsername("user1").get();
-        Member member2 = memberService.findByUsername("user2").get();
-        Member member3 = memberService.findByUsername("user3").get();
 
-        Post post1 = postService.write(member1, "제목1", "내용1");
-        Post post2 = postService.write(member1, "제목2", "내용2");
-        Post post3 = postService.write(member2, "제목3", "내용3");
+        Member author1 = memberService.findByUsername("user1").get();
+        Member author2 = memberService.findByUsername("user2").get();
 
-        post1.addComment(member1, "댓글 1-1");
-        post1.addComment(member1, "댓글 1-2");
-        post1.addComment(member1, "댓글 1-3");
-        post2.addComment(member2, "댓글 2-1");
-        post2.addComment(member2, "댓글 2-2");
+        Post post1 = postService.write(author1, "제목1", "내용1");
+        Post post2 = postService.write(author1, "제목2", "내용2");
+        postService.write(author2,"제목3", "내용3");
+
+        post1.addComment(author1, "댓글 1-1");
+        post1.addComment(author1, "댓글 1-2");
+        post1.addComment(author1, "댓글 1-3");
+        post2.addComment(author2, "댓글 2-1");
+        post2.addComment(author2, "댓글 2-2");
     }
 
     @Transactional
-    public void work2() {
+    public void work1() {
         if(memberService.count() > 0) {
             return;
         }
 
-        //샘플 회원 5명
         memberService.join("system", "system", "시스템");
         memberService.join("admin", "admin", "운영자");
         memberService.join("user1", "1234", "유저1");

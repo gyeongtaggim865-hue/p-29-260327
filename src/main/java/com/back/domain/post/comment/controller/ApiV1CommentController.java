@@ -75,7 +75,7 @@ public class ApiV1CommentController {
 
         Member actor = memberService.findByUsername("user1").get();
         Post post = postService.findById(postId).get();
-        Comment comment = postService.writeComment(actor, post, reqBody.content);
+        Comment comment = post.addComment(actor, reqBody.content);
 
         postService.flush();
 

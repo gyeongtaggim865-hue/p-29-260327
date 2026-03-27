@@ -1,3 +1,4 @@
+/*
 package com.back.domain.post.comment.controller;
 
 import com.back.domain.post.comment.entity.Comment;
@@ -66,3 +67,4 @@ public class CommentController {
         return "redirect:/posts/%d".formatted(post.getId());
     }
 }
+*/

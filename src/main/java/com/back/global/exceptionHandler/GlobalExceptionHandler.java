@@ -1,5 +1,6 @@
 package com.back.global.exceptionHandler;
 
+import com.back.global.exception.ServiceException;
 import com.back.global.rsData.RsData;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -49,5 +50,20 @@ public class GlobalExceptionHandler {
                 "잘못된 형식의 요청 데이터입니다.",
                 "400-2"
         );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public RsData<Void> handleException(IllegalArgumentException e) {
+        return new RsData<Void>(
+                "잘못된 파라미터 요청입니다.",
+                "400-3"
+        );
+    }
+
+    @ExceptionHandler(ServiceException.class)
+    @ResponseBody
+    public RsData<Void> handleException(ServiceException e) {
+        return e.getRsData();
     }
 }

@@ -5,6 +5,7 @@ import com.back.domain.member.service.MemberService;
 import com.back.domain.post.post.dto.PostDto;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
+import com.back.global.exception.ServiceException;
 import com.back.global.rsData.RsData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -67,11 +68,15 @@ public class ApiV1PostController {
     @PostMapping
     @Transactional
     @Operation(summary = "글 작성")
-    public RsData<PostWriteResBody> createItem(
-            @RequestBody @Valid PostWriteReqBody reqBody
+    public RsData<PostWriteResBody> write(
+            @RequestBody @Valid PostWriteReqBody reqBody,
+            @RequestParam String apiKey
     ) {
 
-        Member actor = memberService.findByUsername("user1").get();
+        Member actor = memberService.findByApiKey(apiKey).orElseThrow(
+                () -> new ServiceException("401-1", "유효하지 않은 API 키 입니다.")
+        );
+
 
         Post post = postService.write(actor, reqBody.title, reqBody.content);
         long postsCount = postService.count();
