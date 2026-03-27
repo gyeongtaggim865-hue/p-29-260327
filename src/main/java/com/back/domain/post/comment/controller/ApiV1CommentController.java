@@ -1,9 +1,10 @@
 package com.back.domain.post.comment.controller;
 
+import com.back.domain.member.entity.Member;
+import com.back.domain.member.service.MemberService;
 import com.back.domain.post.comment.dto.CommentDto;
 import com.back.domain.post.comment.entity.Comment;
 import com.back.domain.post.post.entity.Post;
-import com.back.domain.post.post.repository.PostRepository;
 import com.back.domain.post.post.service.PostService;
 import com.back.global.rsData.RsData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,7 @@ import java.util.List;
 public class ApiV1CommentController {
 
     private final PostService postService;
-    private final PostRepository postRepository;
+    private final MemberService memberService;
 
     @GetMapping
     @Operation(summary="댓글 다건 조회")
@@ -72,8 +73,9 @@ public class ApiV1CommentController {
             @RequestBody @Valid CommentWriteReqBody reqBody
     ) {
 
+        Member actor = memberService.findByUsername("user1").get();
         Post post = postService.findById(postId).get();
-        Comment comment = post.addComment(reqBody.content);
+        Comment comment = postService.writeComment(actor, post, reqBody.content);
 
         postService.flush();
 

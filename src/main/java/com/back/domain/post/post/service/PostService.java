@@ -1,5 +1,7 @@
 package com.back.domain.post.post.service;
 
+import com.back.domain.member.entity.Member;
+import com.back.domain.post.comment.entity.Comment;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +16,8 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Post write(String title, String content) {
-        Post post = new Post(title, content);
+    public Post write(Member author, String title, String content) {
+        Post post = new Post(author, title, content);
         return postRepository.save(post);
     }
 
@@ -44,6 +46,11 @@ public class PostService {
 
     public void flush() {
         postRepository.flush();
+    }
+
+    public Comment writeComment(Member author, Post post, String content) {
+        Comment comment = new Comment(author, content, this);
+        return post.addComment(author, content);
     }
 }
 

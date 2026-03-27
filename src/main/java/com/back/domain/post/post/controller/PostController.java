@@ -1,3 +1,4 @@
+/*
 package com.back.domain.post.post.controller;
 
 import com.back.domain.post.post.entity.Post;
@@ -107,3 +108,4 @@ public class PostController {
     }
 
 }
+*/
