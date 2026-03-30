@@ -45,4 +45,31 @@ public class ApiV1MemberController {
                 )
         );
     }
+
+    record MemberLoginReqBody(
+            String username,
+            String password
+    ){}
+
+    record MemberLoginResBody(
+            String apiKey
+    ){}
+
+    @PostMapping("/login")
+    public RsData<MemberLoginResBody> login(@RequestBody @Valid MemberLoginReqBody reqBody) {
+
+        Member actor = memberService.findByUsername(reqBody.username).orElseThrow(
+                () -> new ServiceException("401-1", "존재하지 않는 아이디입니다.")
+        );
+
+        if(!actor.getPassword().equals(reqBody.password)){
+            throw new ServiceException("401-2","비밀번호가 일치하지 않습니다.");
+        }
+
+        return new RsData(
+                "%s님 환영합니다.".formatted(actor.getName()),
+                "200-1",
+                new MemberLoginResBody(actor.getApiKey())
+        );
+    }
 }
